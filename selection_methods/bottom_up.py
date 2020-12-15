@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import numpy as np
 
 from modules.utils import _get_optimalty
@@ -7,7 +9,7 @@ def select_bottom_up(sigma: float,
                      X: np.ndarray,
                      A: np.ndarray,
                      k: int,
-                     optimality: str = 'A') -> np.ndarray:
+                     optimality: str = 'A') -> Tuple[np.ndarray, float]:
     """
 
     :param sigma: float, variance
@@ -15,13 +17,14 @@ def select_bottom_up(sigma: float,
     :param A: np.ndarray, prior precision matrix
     :param k: int, number of samples to select
     :param optimality: str, optimality type, one of ["A", "C", "D", "V"]
-    :return: indexes of samples subset
+    :return: indexes of samples subset, optimality for them
     """
     num_samples = X.shape[0]
     assert num_samples >= k, f'number of samples should be greater than k'
     selected_ixs = []
     full_samples_set = set(list(range(num_samples)))
     optimalty_func = _get_optimalty(optimality)
+    global_score = None
     for i in range(k):
         candidate_samples = list(full_samples_set - set(selected_ixs))
         current_optimalty = np.Inf
@@ -34,5 +37,7 @@ def select_bottom_up(sigma: float,
                 optimal_sample = candidate_sample
         if optimal_sample is not None:
             selected_ixs.append(optimal_sample)
+        if i == k-1:
+            global_score = current_optimalty
 
-    return np.array(selected_ixs)
+    return np.array(selected_ixs), global_score
