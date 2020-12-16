@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 
 from modules.utils import _get_optimalty
-from optimality import subset_covariance
+from modules.optimality import subset_covariance
 
 def select_uniform(X: np.ndarray,
                    A: np.ndarray,

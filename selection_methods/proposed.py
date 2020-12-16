@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 from scipy.linalg import fractional_matrix_power as frac_power
 from modules.utils import _get_optimalty
-from optimality import subset_covariance
+from modules.optimality import subset_covariance
 from modules.dpp import dpp
     
 
