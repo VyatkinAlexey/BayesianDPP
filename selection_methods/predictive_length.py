@@ -4,11 +4,12 @@ import numpy as np
 
 from modules.utils import _get_optimalty
 
-def select_uniform(sigma: float,
-                   X: np.ndarray,
-                   A: np.ndarray,
-                   k: int,
-                   optimality: str = 'A') -> Tuple[np.ndarray, float]:
+
+def select_predictive_length(sigma: float,
+                             X: np.ndarray,
+                             A: np.ndarray,
+                             k: int,
+                             optimality: str = 'A') -> Tuple[np.ndarray, float]:
     """
 
     :param sigma: float, variance
@@ -21,6 +22,11 @@ def select_uniform(sigma: float,
     optimalty_func = _get_optimalty(optimality)
     num_samples = X.shape[0]
     assert num_samples >= k, f'number of samples should be greater than k'
-    selected_ixs = np.random.choice(list(range(num_samples)), size=k, replace=False)
+    probs = np.linalg.norm(X, axis=1)
+    probs = probs / np.sum(probs)
+    selected_ixs = np.random.choice(list(range(num_samples)),
+                                    size=k,
+                                    replace=False,
+                                    p=probs)
     optimality_value = optimalty_func(sigma, X[selected_ixs], A)
     return selected_ixs, optimality_value
