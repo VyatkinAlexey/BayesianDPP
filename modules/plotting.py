@@ -62,7 +62,7 @@ def get_object_to_plot(X, Y, plot_prop: dict,
 def plot(to_plot: list, x_label: str, y_label: str, title: str):
     """
     Plot several plots
-    :param to_plot: python set from get_object_to_plot()
+    :param to_plot: list from python sets. Sets gotten from get_object_to_plot()
     :param x_label: str
     :param y_label: str
     :param title: str
