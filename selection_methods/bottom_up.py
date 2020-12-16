@@ -3,6 +3,7 @@ from typing import Tuple
 import numpy as np
 
 from modules.utils import _get_optimalty
+from optimality import subset_covariance
 
 
 def select_bottom_up(X: np.ndarray,
@@ -29,7 +30,7 @@ def select_bottom_up(X: np.ndarray,
         optimal_sample = None
         for candidate_sample in candidate_samples:
             candidate_ixs = np.append(selected_ixs, [candidate_sample]).astype(int)
-            candidate_optimality = optimalty_func(X_s=X[candidate_ixs], A=A, X=X)
+            candidate_optimality = optimalty_func(Sigma=subset_covariance(X[candidate_ixs]), A=A, X=X)
             if candidate_optimality < current_optimalty:
                 current_optimalty = candidate_optimality
                 optimal_sample = candidate_sample

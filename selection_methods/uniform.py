@@ -3,6 +3,7 @@ from typing import Tuple
 import numpy as np
 
 from modules.utils import _get_optimalty
+from optimality import subset_covariance
 
 def select_uniform(X: np.ndarray,
                    A: np.ndarray,
@@ -20,5 +21,5 @@ def select_uniform(X: np.ndarray,
     num_samples = X.shape[0]
     assert num_samples >= k, f'number of samples should be greater than k'
     selected_ixs = np.random.choice(num_samples, size=k, replace=False)
-    optimality_value = optimalty_func(X_s=X[selected_ixs], A=A, X=X)
+    optimality_value = optimalty_func(Sigma=subset_covariance(X[selected_ixs]), A=A, X=X)
     return selected_ixs, optimality_value

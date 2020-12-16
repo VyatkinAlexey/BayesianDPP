@@ -3,6 +3,7 @@ from typing import Tuple
 import numpy as np
 
 from modules.utils import _get_optimalty
+from optimality import subset_covariance
 
 
 def select_predictive_length(X: np.ndarray,
@@ -26,5 +27,5 @@ def select_predictive_length(X: np.ndarray,
                                     size=k,
                                     replace=False,
                                     p=probs)
-    optimality_value = optimalty_func(X_s=X[selected_ixs], A=A, X=X)
+    optimality_value = optimalty_func(Sigma=subset_covariance(X[selected_ixs]), A=A, X=X)
     return selected_ixs, optimality_value
