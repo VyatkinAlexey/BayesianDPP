@@ -4,14 +4,12 @@ import numpy as np
 
 from modules.utils import _get_optimalty
 
-def select_uniform(sigma: float,
-                   X: np.ndarray,
+def select_uniform(X: np.ndarray,
                    A: np.ndarray,
                    k: int,
                    optimality: str = 'A') -> Tuple[np.ndarray, float]:
     """
 
-    :param sigma: float, variance
     :param X: np.ndarray, matrix of features
     :param A: np.ndarray, prior precision matrix
     :param k: int, number of samples to select

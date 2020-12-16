@@ -4,6 +4,7 @@ from modules.optimality import \
     optimality_D, \
     optimality_V
 
+
 def _get_optimalty(optimalty_letter: str):
     if optimalty_letter == 'A':
         return optimality_A

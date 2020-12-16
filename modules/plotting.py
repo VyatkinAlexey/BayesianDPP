@@ -77,8 +77,6 @@ def plot(to_plot: list, x_label: str, y_label: str, title: str):
         points = plot[0]
         prop = plot[1]
         ax.plot(points[0], points[1], **prop)
-        print(len(points))
-        print(points)
         if len(points) == 4:
             if 'color' in prop.keys():
                 ax.fill_between(points[0], points[2], points[3],
@@ -93,8 +91,8 @@ def plot(to_plot: list, x_label: str, y_label: str, title: str):
     ax.spines['right'].set_color('#dddddd')
     ax.spines['left'].set_color('#dddddd')
     plt.legend(loc='best')
-    plt.xlim(right=5)
-    plt.xlim(left=1.2)
+    #plt.xlim(right=5)
+    #plt.xlim(left=1.2)
     plt.show()
 
 
