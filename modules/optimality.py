@@ -18,6 +18,10 @@ def posterior_covariance(sigma: float, X_s: np.ndarray, A: np.ndarray) -> np.nda
     return sigma * sigma * linalg.inv(to_invert)
 
 
+def subset_covariance(X_s: np.ndarray) -> np.ndarray:
+    return X_s.T @ X_s
+
+
 def optimality_A(sigma: float, X_s: np.ndarray, A: np.ndarray) -> float:
     """
 
@@ -27,7 +31,7 @@ def optimality_A(sigma: float, X_s: np.ndarray, A: np.ndarray) -> float:
     :return: float, optimality value
     """
 
-    Sigma = posterior_covariance(sigma, X_s, A)
+    Sigma = subset_covariance(X_s)
     to_invert = Sigma + A
     return np.float(np.trace(linalg.inv(to_invert)))
 

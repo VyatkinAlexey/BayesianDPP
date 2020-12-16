@@ -21,6 +21,6 @@ def select_uniform(sigma: float,
     optimalty_func = _get_optimalty(optimality)
     num_samples = X.shape[0]
     assert num_samples >= k, f'number of samples should be greater than k'
-    selected_ixs = np.random.choice(list(range(num_samples)), size=k, replace=False)
+    selected_ixs = np.random.choice(num_samples, size=k, replace=False)
     optimality_value = optimalty_func(sigma, X[selected_ixs], A)
     return selected_ixs, optimality_value

@@ -24,7 +24,7 @@ def select_predictive_length(sigma: float,
     assert num_samples >= k, f'number of samples should be greater than k'
     probs = np.linalg.norm(X, axis=1)
     probs = probs / np.sum(probs)
-    selected_ixs = np.random.choice(list(range(num_samples)),
+    selected_ixs = np.random.choice(num_samples,
                                     size=k,
                                     replace=False,
                                     p=probs)

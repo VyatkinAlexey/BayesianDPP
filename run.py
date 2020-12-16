@@ -24,16 +24,16 @@ if __name__=="__main__":
     dataset_name = args.dataset
     print(f'Experiment for {dataset_name} starts')
     df = download_data(dataset_name)
-    print(f'dataframe shape: {df.shape}')
 
     # just test of optimality function
     X = df.values[:, 1:] # zero is taget
+    print(f'dataframe shape: {X.shape}')
     n, d = X.shape
     A = (1/n) * np.eye(d)
     sigma = 1 # ?
     k_linspace = np.arange(start=d, stop=5*d+1, step=1)
-    print('Num samples' + '\t' + 'score')
+    print(f'{"#samples":10}' + '\t' + 'score')
     for k in k_linspace:
-        selected_samples, score = select_predictive_length(sigma=sigma, X=X, A=A, k=k)
-        print(k, '\t', score)
+        selected_samples, score = select_uniform(sigma=sigma, X=X, A=A, k=k)
+        print(f'{k:10}', '\t', f'{score:.4f}')
     # TODO add experiment pipeline there
