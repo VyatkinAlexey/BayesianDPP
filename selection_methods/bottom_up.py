@@ -31,7 +31,7 @@ def select_bottom_up(sigma: float,
         optimal_sample = None
         for candidate_sample in candidate_samples:
             candidate_ixs = np.append(selected_ixs, [candidate_sample]).astype(int)
-            candidate_optimality = optimalty_func(sigma, X[candidate_ixs], A)
+            candidate_optimality = optimalty_func(X_s=X[candidate_ixs], A=A, X=X)
             if candidate_optimality < current_optimalty:
                 current_optimalty = candidate_optimality
                 optimal_sample = candidate_sample

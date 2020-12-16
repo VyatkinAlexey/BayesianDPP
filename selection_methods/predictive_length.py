@@ -28,5 +28,5 @@ def select_predictive_length(sigma: float,
                                     size=k,
                                     replace=False,
                                     p=probs)
-    optimality_value = optimalty_func(sigma, X[selected_ixs], A)
+    optimality_value = optimalty_func(X_s=X[selected_ixs], A=A, X=X)
     return selected_ixs, optimality_value
