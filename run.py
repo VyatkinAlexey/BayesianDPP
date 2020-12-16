@@ -42,16 +42,24 @@ def do_experiment(X: np.ndarray, A: np.ndarray = None, method: str = 'uniform'):
         A = (1 / n) * np.eye(d)
     selection_func = _get_selection(method)
     k_linspace = np.arange(start=d + 3, stop=5 * d + 1, step=1)
-    bootsrtap_size = 25
-    scores = np.empty((len(k_linspace), bootsrtap_size), dtype=float)
-    for bootsrtap_ix in tqdm(range(bootsrtap_size)):
+    if method == 'bottom_up':
+        scores_mean = np.empty(len(k_linspace), dtype=float)
         for ix, k in enumerate(k_linspace):
             selected_samples, score = selection_func(X=X, A=A, k=k)
-            scores[ix, bootsrtap_ix] = score
+            scores_mean[ix] = score
+        scores_top = None
+        scores_down = None
+    else:
+        bootsrtap_size = 25
+        scores = np.empty((len(k_linspace), bootsrtap_size), dtype=float)
+        for bootsrtap_ix in tqdm(range(bootsrtap_size)):
+            for ix, k in enumerate(k_linspace):
+                selected_samples, score = selection_func(X=X, A=A, k=k)
+                scores[ix, bootsrtap_ix] = score
 
-    scores_mean = np.mean(scores, axis=1)
-    scores_top = np.percentile(scores, 95, axis=1)
-    scores_down = np.percentile(scores, 5, axis=1)
+        scores_mean = np.mean(scores, axis=1)
+        scores_top = np.percentile(scores, 95, axis=1)
+        scores_down = np.percentile(scores, 5, axis=1)
 
     plot_prop = {
         'label': method,  # 'label' is necessary
@@ -82,7 +90,7 @@ if __name__=="__main__":
     X = df.values[:, 1:] # zero is taget
     print(f'dataframe shape: {X.shape}')
     plot_objects = []
-    for method in ['uniform', 'bottom_up', 'predictive_length']:
+    for method in ['uniform', 'predictive_length', 'bottom_up']:
         obj_to_plot = do_experiment(X, method=method)
         plot_objects.append(obj_to_plot)
     plot(plot_objects, x_label='Subset size', y_label='A-optimality', title=f'dataset="{dataset_name}"')
