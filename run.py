@@ -82,16 +82,16 @@ def do_experiment(X: np.ndarray,
                 selected_samples, score = selection_func(X=X, A=A, k=k)
                 if len(selected_samples) in scores:
                     scores[len(selected_samples)].append(score)
-
-        scores_mean = np.empty_like(k_linspace)
-        scores_top = np.empty_like(k_linspace)
-        scores_down = np.empty_like(k_linspace)
-
-        for k_ix, k in k_linspace:
+        scores_mean = np.zeros_like(k_linspace)
+        scores_top = np.zeros_like(k_linspace)
+        scores_down = np.zeros_like(k_linspace)
+        for k_ix, k in enumerate(k_linspace):
             current_scores = scores[k]
-            scores_mean[k_ix] = np.mean(current_scores)
-            scores_top[k_ix] = np.percentile(current_scores, 100 - 100 * (alpha/2))
-            scores_down[k_ix] = np.percentile(current_scores, 100 * (alpha/2))
+            if len(current_scores) > 0:
+                scores_mean[k_ix] = np.mean(current_scores)
+                scores_top[k_ix] = np.percentile(current_scores, 100 - 100 * (alpha/2))
+                scores_down[k_ix] = np.percentile(current_scores, 100 * (alpha/2))
+
     else:
         scores = np.empty((len(k_linspace), bootsrtap_size), dtype=float)
         for bootsrtap_ix in tqdm(range(bootsrtap_size)):
@@ -137,7 +137,8 @@ if __name__=="__main__":
     X = df.values[:, 1:] # zero is taget
     print(f'dataframe shape: {X.shape}')
     plot_objects = []
-    for method in ['uniform', 'predictive_length', 'bottom_up', 'bayesian_dpp']:
+    #for method in ['uniform', 'predictive_length', 'bottom_up', 'bayesian_dpp']:
+    for method in ['bayesian_dpp_sdp']:
         obj_to_plot = do_experiment(X, method=method,
                                     bootsrtap_size=args.bootsrt_size,
                                     alpha=args.alpha)

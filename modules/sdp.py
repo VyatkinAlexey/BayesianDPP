@@ -21,5 +21,4 @@ def sdp(X, A, k, optimalty_func):
 
     prob = cp.Problem(cp.Minimize(func(p)), constraints)
     prob.solve()
-
     return np.array(p.value).astype(float)
