@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import LinearConstraint, minimize
 
-def sdp(X, k, optimalty_func):
+def sdp(X, A, k, optimalty_func):
     '''
 
     Find optimal probabilities to minimize optimality functional
@@ -16,6 +16,6 @@ def sdp(X, k, optimalty_func):
     p0 = k / n * np.ones(n)
 
     func = lambda p: optimalty_func(Sigma=(X.T * p) @ X, A=A, X=X)
-    res = minimize(func, p0, constraints=(con1, con2))
+    res = minimize(func, p0, constraints=(con1, con2), method='trust-krylov')
 
     return res.x

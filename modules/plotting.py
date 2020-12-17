@@ -4,37 +4,6 @@ import matplotlib.pyplot as plt
 
 sty = 'seaborn'
 
-'''
-# Example:
-
-Y = np.linspace(1, 10, 29)
-X = np.arange(1, 30)
-Y_top = Y - 0.5
-Y_down = Y + 0.3
-plot_prop_1 = {
-    'label': 'label_1', # 'label' is necessary 
-    'color': 'green',
-    'linestyle': 'dashed'}
-    
-obj_to_plot_1 = get_object_to_plot(X, Y, plot_prop_1, Y_top, Y_down)
-
-Y_2 = np.linspace(1, 4.5, 29) * 2
-X_2 = np.arange(1, 30)
-Y_top_2 = Y_2 - 0.7
-Y_down_2 = Y_2 + 0.8
-plot_prop_2 = {'label': 'label_2'}
-
-obj_to_plot_2 = get_object_to_plot(X_2, Y_2, plot_prop_2)
-
-x_label = 'x_label'
-y_label = 'y_label'
-title = 'title'
-to_plot_list = [obj_to_plot_1, obj_to_plot_2]
-
-plot(to_plot_list, x_label=x_label, y_label=y_label, title=title)
-
-'''
-
 
 def get_object_to_plot(X, Y, plot_prop: dict,
                        Y_top=None, Y_down=None):
@@ -59,13 +28,20 @@ def get_object_to_plot(X, Y, plot_prop: dict,
         return ([X, Y], plot_prop)
 
 
-def plot(to_plot: list, x_label: str, y_label: str, title: str):
+def plot(to_plot: list,
+         x_label: str,
+         y_label: str,
+         title: str,
+         d: int = None,
+         ytop: float = None,
+         save_path: str = None):
     """
     Plot several plots
     :param to_plot: list from python sets. Sets gotten from get_object_to_plot()
     :param x_label: str
     :param y_label: str
     :param title: str
+    :param d: int
     :return: None
     """
     fig, ax = plt.subplots()
@@ -76,6 +52,8 @@ def plot(to_plot: list, x_label: str, y_label: str, title: str):
     for plot in to_plot:
         points = plot[0]
         prop = plot[1]
+        if d is not  None:
+            points[0] = points[0]/d
         ax.plot(points[0], points[1], **prop)
         if len(points) == 4:
             if 'color' in prop.keys():
@@ -93,7 +71,12 @@ def plot(to_plot: list, x_label: str, y_label: str, title: str):
     plt.legend(loc='best')
     #plt.xlim(right=5)
     #plt.xlim(left=1.2)
-    plt.show()
+    if ytop is not None:
+        plt.ylim(top=ytop, bottom=0)
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path, dpi=100)
 
 
 # Example:

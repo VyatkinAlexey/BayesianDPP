@@ -5,13 +5,15 @@ from scipy.linalg import fractional_matrix_power as frac_power
 from modules.utils import _get_optimalty
 from modules.optimality import subset_covariance
 from modules.dpp import dpp
+from modules.sdp import sdp
     
 
-def select_proposed(sigma: float,
-                     X: np.ndarray,
-                     A: np.ndarray,
-                     k: int,
-                     optimality: str = 'A') -> Tuple[np.ndarray, float]:
+def select_bayesian_dpp(X: np.ndarray,
+                        A: np.ndarray,
+                        k: int,
+                        optimality: str = 'A',
+                        with_sdp: bool = False) -> \
+        Tuple[np.ndarray, float]:
     """
 
     :param sigma: float, variance
@@ -24,7 +26,10 @@ def select_proposed(sigma: float,
     optimalty_func = _get_optimalty(optimality)
     num_samples = X.shape[0]
     assert num_samples >= k, f'number of samples should be greater than k'
-    p = k/num_samples * np.ones(num_samples)
+    if with_sdp:
+        p = sdp(X, A, k, optimalty_func)
+    else:
+        p = k/num_samples * np.ones(num_samples)
     Z = A + (X.T * p) @ X
     B = (np.sqrt(p[:,None]) * X) @ frac_power(Z,-0.5)
     DPP = dpp(B)
@@ -33,5 +38,5 @@ def select_proposed(sigma: float,
     b = set(all_n[np.random.uniform(size = num_samples) < p])
     selected_ixs = set(DPP.list_of_samples[0]) | b
     selected_ixs = np.array(list(selected_ixs))
-    optimality_value = optimalty_func(Sigma=subset_covariance(X[selected_ixs]), A, X)
+    optimality_value = optimalty_func(Sigma=subset_covariance(X[selected_ixs]), A=A, X=X)
     return selected_ixs, optimality_value
