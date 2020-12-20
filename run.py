@@ -137,7 +137,7 @@ if __name__=="__main__":
     X = df.values[:, 1:] # zero is taget
     print(f'dataframe shape: {X.shape}')
     plot_objects = []
-    for method in ['uniform', 'predictive_length', 'bottom_up', 'bayesian_dpp', 'bayesian_dpp_sdp']:
+    for method in ['uniform', 'predictive_length', 'bottom_up', 'bayesian_dpp']: #, 'bayesian_dpp_sdp']:
         obj_to_plot = do_experiment(X, method=method,
                                     bootsrtap_size=args.bootsrt_size,
                                     alpha=args.alpha)
