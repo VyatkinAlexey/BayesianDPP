@@ -1,3 +1,4 @@
 .idea
 modules/__pycache__/
+selection_methods/__pycache__/
 .DS_Store
